@@ -39,7 +39,6 @@ function App() {
   return (
     <div className="flex">
       <div className="p-3 w-full">
-        <button onClick={doStuff}>asd</button>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
