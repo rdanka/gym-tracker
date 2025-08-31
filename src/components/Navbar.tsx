@@ -4,7 +4,7 @@ import {
     Dumbbell,
     Home
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function Navbar() {
@@ -22,6 +22,10 @@ function Navbar() {
     setPage(page);
     navigate(page);
   };
+
+  useEffect(() => {
+    setPage(location.pathname.slice(1));
+    }, [location.pathname]);
 
   return (
     <nav className="bg-[var(--secondary)] p-4 px-11 fixed bottom-0 left-0 w-full shadow-md flex justify-between border-t border-[#27352D]">

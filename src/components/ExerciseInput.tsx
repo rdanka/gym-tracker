@@ -3,9 +3,10 @@ import RepInput from "./RepInput";
 
 export interface ExerciseInputProps {
     index: number;
+    repRange: string;
 }
 
-function ExerciseInput({index}: Readonly<ExerciseInputProps>) {
+function ExerciseInput({index, repRange}: Readonly<ExerciseInputProps>) {
 
 
     return(
@@ -14,7 +15,7 @@ function ExerciseInput({index}: Readonly<ExerciseInputProps>) {
               {index}
             </span>
             <KgInput />
-            <RepInput />
+            <RepInput repRange={repRange}/>
           </div>
     )
 }

@@ -1,12 +1,14 @@
-export const routine = {
+import type { Routine } from "./types/routine";
+
+export const routine: Routine = {
   days: {
+    sunday: "rest",
     monday: "pushA",
     tuesday: "pullA",
     wednesday: "legsA",
     thursday: "pushB",
     friday: "pullB",
     saturday: "legsB",
-    sunday: "rest",
   },
   workouts: {
     pushA: [

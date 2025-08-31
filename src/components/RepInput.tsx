@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Input } from "./ui/input";
 
-function RepInput() {
+function RepInput({repRange}: Readonly<{ repRange: string }>) {
   const [value, setValue] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,9 +27,9 @@ function RepInput() {
       type="text"
       inputMode="decimal"
       pattern="[0-9]*[.,]?[0-9]*"
-      className="bg-[var(--muted)] border-0 font-bold text-center text-[var(--muted-foreground)]"
+      className="bg-[var(--muted)] border-0 font-bold text-center text-[var(--muted-foreground)] [&::placeholder]:opacity-30"
       value={value}
-      placeholder="-"
+      placeholder={`${repRange} reps`}
       onChange={handleChange}
       onBlur={handleBlur}
       onFocus={handleFocus}
