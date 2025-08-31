@@ -1,4 +1,4 @@
-const routine = {
+export const routine = {
   days: {
     monday: "pushA",
     tuesday: "pullA",
