@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { routine } from "@/data";
+import { supabase } from "@/lib/supabase";
 import type { DayType, ExerciseDef } from "@/types/routine";
 import { BicepsFlexed, Ellipsis, Flag } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -32,6 +33,31 @@ function Workout() {
     routine.days[dayNames[new Date().getDay()]]
   );
   const navigate = useNavigate();
+  const [results, setResults] = useState<
+    {
+      name: string;
+      sets: { reps: number; weight: number; setNumber: number }[];
+    }[]
+  >([]);
+
+  const handleWorkoutFinish = () => {
+    console.log(results, new Date().toISOString());
+    saveWorkout();
+    navigate("/home");
+  };
+
+  async function saveWorkout() {
+    const { error } = await supabase.from("workout_logs").insert([
+      {
+        date: new Date().toISOString().split("T")[0],
+        workoutType,
+        exercises: results, 
+      },
+    ]);
+
+    if (error) console.error(error);
+    else console.log("Workout saved!");
+  }
 
   useEffect(() => {
     setCurrentExercise(0);
@@ -67,6 +93,37 @@ function Workout() {
               key={`${workout[currentExercise]?.exercise}-${index}`}
               index={index + 1}
               repRange={workout[currentExercise]?.reps}
+              exerciseName={workout[currentExercise]?.exercise}
+              onSetChange={(setData) => {
+                setResults((prev) => {
+                  const existing = prev.find(
+                    (e) => e.name === workout[currentExercise]?.exercise
+                  );
+                  if (existing) {
+                    return prev.map((e) =>
+                      e.name === workout[currentExercise]?.exercise
+                        ? {
+                            ...e,
+                            sets: [
+                              ...e.sets.filter(
+                                (s) => s.setNumber !== setData.setNumber
+                              ),
+                              setData,
+                            ],
+                          }
+                        : e
+                    );
+                  } else {
+                    return [
+                      ...prev,
+                      {
+                        name: workout[currentExercise]?.exercise ?? "",
+                        sets: [setData],
+                      },
+                    ];
+                  }
+                });
+              }}
             />
           ))}
           {currentExercise + 1 !== workout.length ? (
@@ -79,7 +136,6 @@ function Workout() {
               Complete Exercise
             </Button>
           ) : workoutType === "abs" ? (
-            // Only one button full width
             <Button
               className="w-full text-black font-bold py-5"
               onClick={() => navigate("/home")}
@@ -88,7 +144,6 @@ function Workout() {
               Finish workout
             </Button>
           ) : (
-            // Two buttons side by side
             <div className="flex gap-2">
               <Button
                 className="w-1/2 text-black font-bold py-5"
@@ -99,7 +154,7 @@ function Workout() {
               </Button>
               <Button
                 className="w-1/2 bg-white text-black font-bold py-5"
-                onClick={() => navigate("/home")}
+                onClick={handleWorkoutFinish}
               >
                 <Flag />
                 Finish workout

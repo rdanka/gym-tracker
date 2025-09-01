@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Input } from "./ui/input";
 
-function RepInput({repRange}: Readonly<{ repRange: string }>) {
+function RepInput({ repRange, onChangeValue }: { repRange: string, onChangeValue: (val: string) => void }) {
   const [value, setValue] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/[^0-9.]/g, "");
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^0-9]/g, "");
     setValue(raw);
+    onChangeValue(raw);
   };
 
   const handleBlur = () => {
