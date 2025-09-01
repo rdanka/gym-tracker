@@ -14,7 +14,7 @@ export default defineConfig({
         name: "My Gym Tracker",
         short_name: "GymApp",
         description: "Track your workouts and progress",
-        theme_color: "#000000",
+        theme_color: "#111714",
         icons: [
           {
             src: "logo.png",
