@@ -5,14 +5,15 @@ function KgInput({ onChangeValue }: { onChangeValue: (val: string) => void }) {
   const [value, setValue] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value.replace(/[^0-9.]/g, "");
+    const raw = e.target.value.replace(/[^0-9.,]/g, "");
     setValue(raw);
     onChangeValue(raw);
   };
 
   const handleBlur = () => {
     if (value && !value.endsWith("kg")) {
-      setValue(`${value} kg`);
+       const normalized = value.replace(",", ".");
+      setValue(`${normalized} kg`);
     }
   };
 
