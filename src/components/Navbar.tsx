@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import {
-    BarChart2,
-    Dumbbell,
-    Home
+  BarChart2,
+  Dumbbell,
+  Home
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,7 +28,7 @@ function Navbar() {
     }, [location.pathname]);
 
   return (
-    <nav className="bg-[var(--secondary)] p-4 px-11 fixed bottom-0 left-0 w-full shadow-md flex justify-between border-t border-[#27352D]">
+    <nav className="bg-[var(--secondary)] p-4 pb-6 px-11 fixed bottom-0 left-0 w-full shadow-md flex justify-between border-t border-[#27352D]" >
       {navItems.map((item) => (
         <button
           key={item.name}
