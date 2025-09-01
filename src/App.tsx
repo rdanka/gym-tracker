@@ -37,7 +37,7 @@ function App() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
       <div className="p-3 w-full">
         <Routes>
           <Route path="/" element={<Home />} />
