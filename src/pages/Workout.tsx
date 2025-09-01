@@ -1,12 +1,12 @@
 import ExerciseInput from "@/components/ExerciseInput";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { routine } from "@/data";
@@ -29,7 +29,7 @@ function Workout() {
   const [currentExercise, setCurrentExercise] = useState(0);
   const [workout, setWorkout] = useState<ExerciseDef[]>([]);
   const [workoutType, setWorkoutType] = useState<string>(
-    routine.days[dayNames[new Date().getDay() + 1]]
+    routine.days[dayNames[new Date().getDay()]]
   );
   const navigate = useNavigate();
 
