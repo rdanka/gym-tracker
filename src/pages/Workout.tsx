@@ -41,9 +41,13 @@ function Workout() {
   >([]);
 
   const handleWorkoutFinish = () => {
-    console.log(results, new Date().toISOString());
     saveWorkout();
     navigate("/home");
+  };
+
+  const handleWorkoutChange = () => {
+    saveWorkout();
+    setWorkoutType("abs");
   };
 
   async function saveWorkout() {
@@ -138,7 +142,7 @@ function Workout() {
           ) : workoutType === "abs" ? (
             <Button
               className="w-full text-black font-bold py-5"
-              onClick={() => navigate("/home")}
+              onClick={handleWorkoutFinish}
             >
               <Flag />
               Finish workout
@@ -147,7 +151,7 @@ function Workout() {
             <div className="flex gap-2">
               <Button
                 className="w-1/2 text-black font-bold py-5"
-                onClick={() => setWorkoutType("abs")}
+                onClick={handleWorkoutChange}
               >
                 <BicepsFlexed />
                 Continue with abs
