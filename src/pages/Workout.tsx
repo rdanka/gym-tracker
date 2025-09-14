@@ -12,7 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import { routine } from "@/data";
 import { supabase } from "@/lib/supabase";
 import type { DayType, ExerciseDef } from "@/types/routine";
-import { BicepsFlexed, Ellipsis, Flag } from "lucide-react";
+import { BicepsFlexed, ChevronLeft, ChevronRight, Flag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +30,7 @@ function Workout() {
   const [currentExercise, setCurrentExercise] = useState(0);
   const [workout, setWorkout] = useState<ExerciseDef[]>([]);
   const [workoutType, setWorkoutType] = useState<string>(
-    routine.days[dayNames[new Date().getDay()]]
+    routine.days[dayNames[new Date().getDay()+1]]
   );
   const navigate = useNavigate();
   const [results, setResults] = useState<
@@ -87,49 +87,60 @@ function Workout() {
           <CardDescription className="text-[var(--muted-foreground)] text-sm">
             60kg x 8 | 60kg x 8 | 60kg x 8
           </CardDescription>
-          <CardAction>
-            <Ellipsis />
+          <CardAction >
+           <div className="flex">
+            <ChevronLeft onClick={() => setCurrentExercise((prev) => Math.min(prev - 1, workout.length))}/>
+            <ChevronRight onClick={() => setCurrentExercise((prev) => Math.min(prev + 1, workout.length))}/>
+           </div>
           </CardAction>
         </CardHeader>
         <CardContent className="flex flex-col gap-5">
-          {[...Array(workout[currentExercise]?.sets || 0)].map((_, index) => (
-            <ExerciseInput
-              key={`${workout[currentExercise]?.exercise}-${index}`}
-              index={index + 1}
-              repRange={workout[currentExercise]?.reps}
-              exerciseName={workout[currentExercise]?.exercise}
-              onSetChange={(setData) => {
-                setResults((prev) => {
-                  const existing = prev.find(
-                    (e) => e.name === workout[currentExercise]?.exercise
-                  );
-                  if (existing) {
-                    return prev.map((e) =>
-                      e.name === workout[currentExercise]?.exercise
-                        ? {
-                            ...e,
-                            sets: [
-                              ...e.sets.filter(
-                                (s) => s.setNumber !== setData.setNumber
-                              ),
-                              setData,
-                            ],
-                          }
-                        : e
-                    );
-                  } else {
-                    return [
-                      ...prev,
-                      {
-                        name: workout[currentExercise]?.exercise ?? "",
-                        sets: [setData],
-                      },
-                    ];
+          {[...Array(workout[currentExercise]?.sets || 0)].map((_, index) => {
+  const saved = results
+    .find((e) => e.name === workout[currentExercise]?.exercise)
+    ?.sets.find((s) => s.setNumber === index + 1);
+
+  return (
+    <ExerciseInput
+      key={`${workout[currentExercise]?.exercise}-${index}`}
+      index={index + 1}
+      repRange={workout[currentExercise]?.reps}
+      exerciseName={workout[currentExercise]?.exercise}
+      value={saved} // 👈 pass saved values
+      onSetChange={(setData) => {
+        setResults((prev) => {
+          const existing = prev.find(
+            (e) => e.name === workout[currentExercise]?.exercise
+          );
+          if (existing) {
+            return prev.map((e) =>
+              e.name === workout[currentExercise]?.exercise
+                ? {
+                    ...e,
+                    sets: [
+                      ...e.sets.filter(
+                        (s) => s.setNumber !== setData.setNumber
+                      ),
+                      setData,
+                    ],
                   }
-                });
-              }}
-            />
-          ))}
+                : e
+            );
+          } else {
+            return [
+              ...prev,
+              {
+                name: workout[currentExercise]?.exercise ?? "",
+                sets: [setData],
+              },
+            ];
+          }
+        });
+      }}
+    />
+  );
+})}
+
           {currentExercise + 1 !== workout.length ? (
             <Button
               className="w-full text-black font-bold py-5"

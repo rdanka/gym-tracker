@@ -1,26 +1,27 @@
-import { useState } from "react";
 import { Input } from "./ui/input";
 
-function KgInput({ onChangeValue }: { onChangeValue: (val: string) => void }) {
-  const [value, setValue] = useState("");
-
+function KgInput({
+  value,
+  onChangeValue,
+}: {
+  value: string;
+  onChangeValue: (val: string) => void;
+}) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/[^0-9.,]/g, "");
-    setValue(raw);
-    onChangeValue(raw);
+    onChangeValue(raw); // parent now owns state
   };
 
   const handleBlur = () => {
     if (value && !value.endsWith("kg")) {
-       const normalized = value.replace(",", ".");
-      setValue(`${normalized} kg`);
+      const normalized = value.replace(",", ".");
+      onChangeValue(`${normalized} kg`);
     }
   };
 
   const handleFocus = () => {
-    // remove "kg" when editing again
     if (value.endsWith(" kg")) {
-      setValue(value.replace(" kg", ""));
+      onChangeValue(value.replace(" kg", ""));
     }
   };
 
