@@ -30,7 +30,7 @@ function Workout() {
   const [currentExercise, setCurrentExercise] = useState(0);
   const [workout, setWorkout] = useState<ExerciseDef[]>([]);
   const [workoutType, setWorkoutType] = useState<string>(
-    routine.days[dayNames[new Date().getDay()+1]]
+    routine.days[dayNames[new Date().getDay()]]
   );
   const navigate = useNavigate();
   const [results, setResults] = useState<
